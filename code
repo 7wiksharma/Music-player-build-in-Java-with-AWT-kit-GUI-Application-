@@ -1,0 +1,114 @@
+import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.*;
+import javax.sound.sampled.AudioInputStream; 
+import javax.sound.sampled.AudioSystem; 
+import javax.sound.sampled.Clip; 
+import javax.sound.sampled.LineUnavailableException; 
+import javax.sound.sampled.UnsupportedAudioFileException; 
+import java.awt.Desktop;
+import javax.sound.sampled.*;
+import java.io.File;
+
+
+
+
+
+class  music extends  Frame implements ActionListener 
+
+
+
+{
+	Button b1 = new Button("browse");
+	Button b2 = new Button("stop");
+	Button b3 = new Button("play");
+	Button b4 = new Button("loop");
+     Clip audioClip;
+
+	music() {
+		add(b1);
+		add(b2);
+		add(b3);
+		add(b4);
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+		b3.addActionListener(this);
+		b4.addActionListener(this);
+	
+		setLayout(new  FlowLayout());
+	 
+        setSize(333,444);
+	    setVisible(true);
+		
+		
+	}
+	public void actionPerformed(ActionEvent e){
+		
+   if (e.getSource() == b1) {
+            FileDialog fileDialog = new FileDialog(this, "Select an audio file", FileDialog.LOAD);
+            fileDialog.setFile("*.wav;*.mp3");
+            fileDialog.setVisible(true);
+
+            String selectedFile = fileDialog.getFile();
+            if (selectedFile != null) {
+                String filePath = fileDialog.getDirectory() + selectedFile;
+                playAudio(filePath);}
+				}
+				else if (e.getSource() == b2 )
+				{ 
+					stopAudio();
+
+			}
+			else if (e.getSource() == b3) {
+            playAudio();
+        } else if (e.getSource() == b4) {
+            loopAudio();
+        }
+ 
+
+		
+	}
+
+	private void playAudio(String filePath) {
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(filePath));
+            audioClip = AudioSystem.getClip();
+            audioClip.open(audioStream);
+            audioClip.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+	 private void stopAudio() {
+       
+            audioClip.stop();
+        }
+    
+
+    private void playAudio() {
+         
+            audioClip.start();
+        
+    }
+
+    private void loopAudio() {
+        
+            audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+        
+    }
+}
+
+class mp3
+{
+
+
+
+	public static void main(String[] args) 
+	{
+		  new music();
+	}
+
+}
+ 
+  
